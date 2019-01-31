@@ -1,4 +1,4 @@
-Ankit Sharma(BIO699) - MT16121
+Author: Ankit Sharma(BIO699) - MT16121
 Department of Computational Biology, Indraprastha Institute of Information Technology, IIIT-Delhi
 *****File description*****
 1. Supplementary_Data_1.xlsx - This file contains the complete list of thermophilic and mesophilic 
