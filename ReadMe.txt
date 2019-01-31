@@ -10,7 +10,7 @@ dataset.
 *****Runtime requirements: Python 3.6, Biopython 1.73 networkX 2.2 and other usual machine learning libraries*****
 Some important points:
 1. Source codes are present in src for replication.
-2. Directory names are in correspondance to its experiments.
+2. Directory names are in correspondance to their experiments.
 3. Python scripts contain their execution sequence number as the first character in their name.
 4. PDB files needed in 'Binning1' and 'Binning2' are placed separately inside 'Data' directory under 'MesoStructPDB' and 'ThermoStructPDB'.
 5. Network files 'MesoPklNx' and 'ThermoPklNx' are also placed inside 'Data' directory.
