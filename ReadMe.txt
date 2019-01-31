@@ -12,7 +12,10 @@ Some important points:
 1. Source codes are present in src for replication.
 2. Directory names are in correspondance to its experiments.
 3. Python scripts contain their execution sequence number as the first character in their name.
-4. PDB files needed in 'Binning1' and 'Binning2' are placed separately inside 'Data' directory.
-5. Random search and grid search sections are to be run one after the other. Comment grid search while running random search and vice-versa.
+4. PDB files needed in 'Binning1' and 'Binning2' are placed separately inside 'Data' directory under 'MesoStructPDB' and 'ThermoStructPDB'.
+5. Network files 'MesoPklNx' and 'ThermoPklNx' are also placed inside 'Data' directory.
+6. Random search and grid search sections are to be run one after the other. Comment grid search while running random search and vice-versa.
+
+Data directory: https://drive.google.com/drive/folders/12RRmCPtlrBbEENc_n99RQIbK4aCzfgEF?usp=sharing
 
 Note: During replication, the runtime would dump files in local directories for subsequent stages, please ensure availability of atleast 2GB space.
