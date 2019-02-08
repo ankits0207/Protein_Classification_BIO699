@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_curve, auc, matthews_corrcoef
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_auc_score, matthews_corrcoef
 import numpy as np
 
 cvCount = 10
@@ -29,7 +29,7 @@ thermoDf = myDataframe[myDataframe['label'] == 1]
 
 m = 508
 t = 575
-kf = StratifiedKFold(n_splits=cvCount, shuffle=True)
+kf = StratifiedKFold(n_splits=cvCount, random_state=42, shuffle = True)
 
 listOfMesoDfs = []
 for i in range(iterations):
@@ -77,8 +77,7 @@ for threshold in thresholdRange:
             rcv += recall_score(Y_test, predictions)
             f1scv += f1_score(Y_test, predictions)
             acccv += accuracy_score(Y_test, predictions)
-            fpr, tpr, thresholds = roc_curve(Y_test, predictions, pos_label=1)
-            auroccv += auc(fpr, tpr)
+            auroccv += roc_auc_score(Y_test, predictions_prob[:, 1])
             mcccv += matthews_corrcoef(Y_test, predictions)
         pit += (pcv/cvCount)
         rit += (rcv/cvCount)

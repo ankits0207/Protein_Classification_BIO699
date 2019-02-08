@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.model_selection import KFold
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import precision_score, recall_score, roc_curve, auc, accuracy_score, matthews_corrcoef, f1_score
+from sklearn.metrics import precision_score, recall_score, roc_auc_score, accuracy_score, matthews_corrcoef, f1_score
 import pandas as pd
 
 iterations = 4
@@ -49,8 +49,7 @@ for i in range(iterations):
         predictions = getPredictionsGivenThreshold(predictionsProb, threshold)
         precision = precision_score(Y_te, predictions)
         recall = recall_score(Y_te, predictions)
-        fpr, tpr, thresholds = roc_curve(Y_te, predictions, pos_label=1)
-        auroc = auc(fpr, tpr)
+        auroc = roc_auc_score(Y_te, predictionsProb[:, 1])
         accuracy = accuracy_score(Y_te, predictions)
         matthewsCoeff = matthews_corrcoef(Y_te, predictions)
         f1score = f1_score(Y_te, predictions)

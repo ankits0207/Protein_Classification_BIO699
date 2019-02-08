@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_curve, auc, matthews_corrcoef
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_auc_score, matthews_corrcoef
 import numpy as np
 
 def getPredictionsGivenThreshold(myMatrix, th):
@@ -89,8 +89,7 @@ for threshold in thresholdRange:
             r = recall_score(Y_test, predictions)
             f1s = f1_score(Y_test, predictions)
             acc = accuracy_score(Y_test, predictions)
-            fpr, tpr, thresholds = roc_curve(Y_test, predictions, pos_label=1)
-            auroc = auc(fpr, tpr)
+            auroc = roc_auc_score(Y_test, predictions_prob[:, 1])
             mcc = matthews_corrcoef(Y_test, predictions)
             pcv += p
             rcv += r

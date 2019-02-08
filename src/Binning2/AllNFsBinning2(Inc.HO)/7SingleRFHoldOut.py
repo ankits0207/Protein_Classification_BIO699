@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_curve, auc, matthews_corrcoef
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_auc_score, matthews_corrcoef
 
 cvCount = 10
 clf = RandomForestClassifier(random_state=42, max_depth=95, max_features='sqrt', min_samples_leaf=1,
@@ -45,13 +45,12 @@ for listOfColumnsToBeDropped in listOfListOfColumnsToBeDropped:
         Y_train, Y_test = Y[train_index], Y[test_index]
         clf.fit(X_train, Y_train)
         predictions = clf.predict(X_test)
-        predictions_prob = clf.predict_proba(X_test)[:, 1]
+        predictions_prob = clf.predict_proba(X_test)
         p = precision_score(Y_test, predictions)
         r = recall_score(Y_test, predictions)
         f1s = f1_score(Y_test, predictions)
         acc = accuracy_score(Y_test, predictions)
-        fpr, tpr, thresholds = roc_curve(Y_test, predictions, pos_label=1)
-        auroc = auc(fpr, tpr)
+        auroc = roc_auc_score(Y_test, predictions_prob[:, 1])
         mcc = matthews_corrcoef(Y_test, predictions)
         pcv += p
         rcv += r
