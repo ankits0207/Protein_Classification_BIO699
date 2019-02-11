@@ -18,4 +18,4 @@ Some important points:
 
 Data directory: https://drive.google.com/drive/folders/12RRmCPtlrBbEENc_n99RQIbK4aCzfgEF?usp=sharing
 
-Note: During replication, the runtime would dump files in local directories for subsequent stages, please ensure availability of atleast 2GB disk space.
+Note: During replication, the runtime would dump files in local directories for subsequent stages, please ensure availability of atleast 2GB disk space. Charts directory contains the code for plotting results.
