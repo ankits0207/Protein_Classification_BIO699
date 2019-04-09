@@ -1,12 +1,13 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
+import pickle
 
 iter = 4
 cvCount = 10
 
-random_params = [[152, 3, 2, 'sqrt', 64, False], [230, 10, 1, 'auto', 17, False],
-                 [268, 6, 1, 'auto', 20, False], [268, 6, 1, 'auto', 20, False]]
+random_params = [[194, 9, 2, 'auto', 41, False], [269, 4, 1, 'sqrt', 67, False],
+                 [192, 5, 1, 'sqrt', 39, True], [58, 4, 3, 'sqrt', 53, False]]
 
 best_params = []
 for i in range(iter):
@@ -43,6 +44,8 @@ for i in range(iter):
     grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=cvCount, n_jobs=-1, verbose=2)
     # Fit the grid search to the data
     grid_search.fit(X_train, Y_train.ravel())
-    best_params.append(grid_search.best_params_)
-for best_param in best_params:
-    print(best_param)
+    # Save the model
+    optimised_random_forest = grid_search.best_estimator_
+    with open('Model_' + str(i) + '.pkl', 'wb') as f:
+        pickle.dump(grid_search, f)
+print('Done')

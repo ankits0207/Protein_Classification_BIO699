@@ -12,11 +12,11 @@ for i in range(iter):
     Y_train = np.load('Y_train_' + str(i) + '.npy')
 
     # Number of trees in random forest
-    n_estimators = [int(x) for x in np.linspace(start=50, stop=300, num=250)]
+    n_estimators = [int(x) for x in np.linspace(start=50, stop=300, num=150)]
     # Number of features to consider at every split
     max_features = ['auto', 'sqrt']
     # Maximum number of levels in tree
-    max_depth = [int(x) for x in np.linspace(1, 100, num=100)]
+    max_depth = [int(x) for x in np.linspace(1, 100, num=50)]
     max_depth.append(None)
     # Minimum number of samples required to split a node
     min_samples_split = [2, 3, 4, 5, 6, 7, 8, 9, 10]
