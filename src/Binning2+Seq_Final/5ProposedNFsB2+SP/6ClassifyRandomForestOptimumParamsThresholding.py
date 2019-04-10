@@ -1,15 +1,10 @@
 import numpy as np
-from sklearn.model_selection import KFold
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, accuracy_score, matthews_corrcoef, f1_score
-import pandas as pd
+import pickle
 
 iterations = 4
-cvCount = 10
 threshold = 0.48
-
-best_params = [[False, 1, 265, 5, 'auto', 18], [True, 1, 240, 4, 'auto', 63],
-               [False, 1, 179, 5, 'sqrt', 40], [False, 1, 48, 4, 'sqrt', 72]]
 
 def getPredictionsGivenThreshold(myMatrix, th):
     myList = []
@@ -21,55 +16,47 @@ def getPredictionsGivenThreshold(myMatrix, th):
             myList.append(0)
     return np.asarray(myList)
 
+def getResults(listOfPredProb, labels):
+    zeroProb = []
+    oneProb = []
+    zeroNpArr = []
+    oneNpArr = []
+    for predProb in listOfPredProb:
+        zeroProb.append(predProb[:, 0])
+        oneProb.append(predProb[:, 1])
+    for i in range(listOfPredProb[0].shape[0]):
+        totZeroProb = zeroProb[0][i] + zeroProb[1][i] + zeroProb[2][i] + zeroProb[3][i]
+        finZeroProb = (totZeroProb*1.0)/4
+        totOneProb = oneProb[0][i] + oneProb[1][i] + oneProb[2][i] + oneProb[3][i]
+        finOneProb = (totOneProb * 1.0) / 4
+        zeroNpArr.append(finZeroProb)
+        oneNpArr.append(finOneProb)
+    matrix = np.column_stack((zeroNpArr, oneNpArr))
+    matrixPredictions = getPredictionsGivenThreshold(matrix, threshold)
+    precision = precision_score(labels, matrixPredictions)
+    recall = recall_score(labels, matrixPredictions)
+    auroc = roc_auc_score(labels, matrix[:, 1])
+    accuracy = accuracy_score(labels, matrixPredictions)
+    matthewsCoeff = matthews_corrcoef(labels, matrixPredictions)
+    f1score = f1_score(labels, matrixPredictions)
 
-overallPrecision = 0
-overallRecall = 0
-overallAuroc = 0
-overallAccuracy = 0
-overallMc = 0
-overallF1 = 0
+    print('Precision: ' + str(precision))
+    print('Recall: ' + str(recall))
+    print('F1: ' + str(f1score))
+    print('Accuracy: ' + str(accuracy))
+    print('AUROC: ' + str(auroc))
+    print('MCC: ' + str(matthewsCoeff))
+
+
+X_test = np.load('X_test.npy')
+Y_test = np.load('Y_test.npy')
+
+listOfPredictionProbabilities = []
 for i in range(iterations):
-    X_train = np.load('X_train_' + str(i) + '.npy')
-    Y_train = np.load('Y_train_' + str(i) + '.npy')
-    skf = KFold(n_splits=cvCount, random_state=42, shuffle=True)
-    foldPrecision = 0
-    foldRecall = 0
-    foldAuroc = 0
-    foldAccuracy = 0
-    foldMc = 0
-    foldF1 = 0
-    for train_index, test_index in skf.split(X_train, Y_train):
-        X_tr, X_te = X_train[train_index], X_train[test_index]
-        Y_tr, Y_te = Y_train[train_index], Y_train[test_index]
-        bp = best_params[i]
-        clf = RandomForestClassifier(bootstrap=bp[0], min_samples_leaf=bp[1], n_estimators=bp[2],
-                                     min_samples_split=bp[3], max_features=bp[4], max_depth=bp[5],
-                                     random_state=42).fit(X_tr, Y_tr.ravel())
-        predictionsProb = clf.predict_proba(X_te)
-        predictions = getPredictionsGivenThreshold(predictionsProb, threshold)
-        precision = precision_score(Y_te, predictions)
-        recall = recall_score(Y_te, predictions)
-        auroc = roc_auc_score(Y_te, predictionsProb[:, 1])
-        accuracy = accuracy_score(Y_te, predictions)
-        matthewsCoeff = matthews_corrcoef(Y_te, predictions)
-        f1score = f1_score(Y_te, predictions)
+    with open('Model_' + str(i) + '.pkl', 'rb') as f:
+        model = pickle.load(f)
+    predictionProbabilities = model.predict_proba(X_test)
+    listOfPredictionProbabilities.append(predictionProbabilities)
 
-        foldPrecision += precision
-        foldRecall += recall
-        foldAuroc += auroc
-        foldAccuracy += accuracy
-        foldMc += matthewsCoeff
-        foldF1 += f1score
-    overallPrecision = overallPrecision + (foldPrecision/cvCount)
-    overallRecall = overallRecall + (foldRecall/cvCount)
-    overallAuroc = overallAuroc + (foldAuroc / cvCount)
-    overallAccuracy = overallAccuracy + (foldAccuracy/cvCount)
-    overallMc = overallMc + (foldMc/cvCount)
-    overallF1 = overallF1 + (foldF1/cvCount)
-print('Precision: ' + str(overallPrecision/iterations))
-print('Recall: ' + str(overallRecall/iterations))
-print('F1: ' + str(overallF1/iterations))
-print('Accuracy: ' + str(overallAccuracy/iterations))
-print('AUROC: ' + str(overallAuroc / iterations))
-print('MCC: ' + str(overallMc/iterations))
+getResults(listOfPredictionProbabilities, Y_test)
 print('Done')

@@ -1,9 +1,9 @@
 import pandas as pd
 
-numRecordsMeso = 500
+numRecordsMeso = 475
 iter = 4
 
-numRecordsThermo = 575
+numRecordsThermo = 450
 
 mergedDf = pd.read_csv('MergedData.csv')
 mesoDf = mergedDf[mergedDf['label'] == 0]
@@ -20,8 +20,14 @@ for i in range(iter):
 thermoDfCV = thermoDf.sample(n=numRecordsThermo, replace=False, random_state=42)
 thermoDf = thermoDf.drop(thermoDfCV.index)
 
+mesoDf.reset_index(inplace=True, drop=True)
+thermoDf.reset_index(inplace=True, drop=True)
+
 for i in range(iter):
     tempDf = pd.concat([mesoDfsCV[i], thermoDfCV])
     tempDf.to_csv('MergedBalancedSubset_' + str(i) + '.csv', index=False)
+
+testDf = pd.concat([mesoDf, thermoDf])
+testDf.to_csv('HoldOutDf.csv', index=False)
 
 print('Done')

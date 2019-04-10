@@ -11,4 +11,11 @@ for i in range(iter):
     np.save('X_train_' + str(i), X_train)
     np.save('Y_train_' + str(i), Y_train)
 
+TestDf = pd.read_csv('HoldOutDf.csv')
+Y_test = TestDf.loc[:, TestDf.columns == 'label'].values
+X_test = TestDf.loc[:, TestDf.columns != 'pdbId']
+X_test = X_test.loc[:, X_test.columns != 'label'].values
+np.save('X_test', X_test)
+np.save('Y_test', Y_test)
+
 print('Done')
