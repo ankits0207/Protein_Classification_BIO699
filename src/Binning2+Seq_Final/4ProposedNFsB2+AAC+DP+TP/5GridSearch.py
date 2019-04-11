@@ -6,8 +6,8 @@ import pickle
 iter = 4
 cvCount = 10
 
-random_params = [[269, 4, 1, 'sqrt', 67, False], [269, 4, 1, 'sqrt', 67, False],
-                 [269, 4, 1, 'sqrt', 67, False], [190, 3, 2, 'sqrt', 63, False]]
+random_params = [[194, 9, 2, 'auto', 41, False], [269, 4, 1, 'sqrt', 67, False],
+                 [192, 5, 1, 'sqrt', 39, True], [58, 4, 3, 'sqrt', 53, False]]
 
 best_params = []
 for i in range(iter):
