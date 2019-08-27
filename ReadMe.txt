@@ -22,3 +22,5 @@ Note: During replication, the runtime would dump files in local directories for 
 
 Binning 1 = DSA
 Binning 2 = DSF
+GD - Gao ding's work, Gao, X. and Ding, Y. (2017). Using the residue interaction network improve the classification of thermophilic and mesophilic proteins. Current Bioinformatics, 12(3), 249–257.
+
