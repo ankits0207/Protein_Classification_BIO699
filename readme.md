@@ -1,4 +1,5 @@
 Author: Ankit Sharma(BIO699) - MT16121 - ankit16121@iiitd.ac.in
+
 Department of Computational Biology, Indraprastha Institute of Information Technology, IIIT-Delhi
 *****File description*****
 1. Supplementary_Data_1.xlsx - This file contains the complete list of thermophilic and mesophilic 
@@ -8,7 +9,9 @@ dataset.
 3. Supplementary_Data_3.xlsx - This file contains the list of mesophilic proteins from the finalized
 dataset.
 *****Runtime requirements: Python 3.6, Biopython 1.73 networkX 2.2 and other usual machine learning libraries*****
-Some important points:
+
+#### Some important points:
+
 1. Source codes are present in src for replication.
 2. Directory names are in correspondance to their experiments.
 3. Python scripts contain their execution sequence number as the first character in their name.
